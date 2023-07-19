@@ -1,0 +1,263 @@
+ПРАКТИЧЕСКОЕ ЗАДАНИЕ №3
+Настройте автоматическую отправку по почте логов изученных сервисов: SSH, FTP, RDP.
+
+УСЛОВИЯ РЕАЛИЗАЦИИ
+Используйте утилиту Logwatch и планировщик задач cron.
+Письмо должно отправляться каждый день в 8:00.
+Уровень детализации — на ваше усмотрение.
+В качестве ответа приложите:
+
+Текст задачи в cron.
+Команду для утилиты Logwatch (в отдельном текстовом файле).
+Скриншот полученного письма.
+Файлы загрузите на GitHub в отдельную от предыдущих пунктов папку.
+
+Logwatch services for SSH, FTP, RDP:
+sshd, vsftpd, xrpd
+
+*******************************************************************
+
+My log of setting up the Postfix relay with Gmail account:
+
+Настройка App Password for Postfix Gmail relay:
+The freaking App Password wasn't listed as the instructions say, I really found it under the 2-factor authentication
+option (checked 2 different Gmail accounts, damn!):
+
+https://www.tutorialspoint.com/configure-postfix-to-use-gmail-smtp-on-ubuntu
+
+https://kifarunix.com/configure-postfix-to-use-gmail-app-passwords/
+
+*********************************************************************
+
+Configure Postfix to Use Gmail SMTP on Ubuntu
+LinuxUbuntuOperating SystemOpen Source
+Introduction
+Postfix is open-source mail transfer agent (MTA) it allows users to send and receive email on Linux system. It is efficient and easy-to-use solution, it can configured to work with various email providers, including Gmail.
+
+In this article, we will show you steps to configure Postfix using Gmail SMTP on Ubuntu. This process involve setting up Gmail account to allow any apps to access it, installing and configuring Postfix, testing setup to ensure it works.
+
+Before dive into details, let's take why you might want to use Gmail SMTP with Postfix.
+
+Why Use Gmail SMTP with Postfix?
+Using Gmail SMTP with Postfix offers several benefits, including −
+
+Reliability − Gmail has a robust infrastructure that ensures your emails are delivered without any issues.
+
+Security − Gmail SMTP uses encrypted connections to protect your email data from interception by third parties.
+
+Spam Protection − Gmail has advanced spam filters that help prevent your emails from being marked as spam.
+
+Cost-effective − Gmail provides free SMTP service up to a certain limit, making it a cost-effective option for small businesses and individuals.
+
+Now that we understand benefits of using Gmail SMTP with Postfix, let's proceed to configuration steps.
+
+Step 1: Allow External Access to Gmail
+Before you can use Gmail SMTP with Postfix, you need to allow external access to your Gmail account. This involves enabling "Less Secure Apps" feature on your Google account settings.
+
+To enable this feature, follow these steps −
+
+Go to Google Account Security page by clicking on this link −
+
+https://myaccount.google.com/security
+
+Click on "Less secure app access" section.
+
+Toggle on "Allow less secure apps" switch.
+
+Note − Enabling this feature may increase risk of unauthorized access to your Google account. However, it is necessary for Postfix to access your Gmail account.
+
+Step 2: Install Postfix
+After enabling "Less Secure Apps" on your Gmail account, next step is to install Postfix on your Ubuntu system. You can do this by running following command −
+
+sudo apt-get install postfix
+The command will prompt you to select mail server configuration type. Choose "Internet Site" and click "Ok." This will launch a configuration wizard that will guide you through setup process.
+
+Step 3: Configure Postfix
+Once you have installed Postfix, next step is to configure it to work with Gmail SMTP. This involves editing main configuration file located at /etc/postfix/main.cf.
+
+To edit the file, open it in your preferred text editor using following command −
+
+sudo nano /etc/postfix/main.cf
+Then add following lines at bottom of the file −
+
+SMTP Settings for Gmail
+relayhost = [smtp.gmail.com]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+smtp_use_tls = yes
+The above settings configure Postfix to use Gmail SMTP as relay host, enable authentication, and use SSL/TLS encryption.
+
+Step 4: Create a Password File for Authentication
+To authenticate your Gmail account with Postfix, you need to create a password file. This file will contain your Gmail email address and password.
+
+To create password file, run following command −
+
+sudo nano /etc/postfix/sasl_passwd
+Then add following line to the file −
+
+[smtp.gmail.com]:587 your_email_address@gmail.com:your_gmail_password
+Replace "your_email_address" with your Gmail email address and "your_gmail_password” with your actual Gmail password.
+(example [App password removed] [smtp.gmail.com]:587 g.alexanders@gmail.com:qasmuhppnydrjnpa)
+
+After adding line, save and exit the file.
+
+Next, run following command to create a hash map of password file −
+
+sudo postmap /etc/postfix/sasl_passwd
+This command will create a new file called sasl_passwd.db in same directory as sasl_passwd file.
+
+Step 5: Restart Postfix
+After configuring Postfix and creating password file, you need to restart service for changes to take effect.
+
+To restart Postfix, run following command −
+
+sudo service postfix restart
+Step 6: Test the Configuration
+To test Postfix configuration, you can send a test email from command line using following command −
+
+echo "This is a test email." | mail -s "Test email" recipient_email_address
+Replace "recipient_email_address" with email address of recipient.
+
+If configuration is correct, you should receive the email in your recipient email address.
+
+Here are some additional details to consider when configuring Postfix to use Gmail SMTP on Ubuntu −
+
+Using an App Password
+If you have two-factor authentication (2FA) enabled on your Gmail account, you may need to use an app password instead of your regular Gmail password. To create an app password, follow these steps −
+
+Go to Google Account Security page.
+
+Click on "App passwords" section.
+
+Select "Mail" and "Other (Custom name)" from dropdown menu.
+
+Enter a custom name for app password and click "Generate."
+
+Copy generated password and use it in place of your regular Gmail password in sasl_passwd file.
+
+Troubleshooting Common Issues
+If you encounter any issues while configuring Postfix to use Gmail SMTP, here are some common solutions −
+
+If you get a "SASL authentication failed" error, check your sasl_passwd file and make sure it contains correct email address and password. Also, ensure that sasl_passwd file has correct permissions (600).
+
+If you get a "Connection timed out" error, check your firewall settings and ensure that port 587 (Gmail SMTP port) is open.
+
+If you get a "Certificate verification failed" error, ensure that ca-certificates package is installed on your system. You can install it using following command −
+
+sudo apt-get install ca-certificates
+If you get a "Message size exceeds maximum allowed" error, check your Postfix configuration and increase message_size_limit parameter in the main.cf file.
+
+Using Other Email Providers
+While this article focuses on using Gmail SMTP with Postfix, you can use other email providers as well. The configuration steps may differ depending on provider, but general principles remain same.
+
+Some popular email providers that work well with Postfix include Yahoo, Microsoft, and Amazon SES.
+
+Advanced Configuration
+If you want to customize your Postfix configuration further, you can explore various settings available in the main.cf file. These include options for email filtering, domain name resolution, SMTP relay access, and more.
+
+However, be careful when modifying these settings, as incorrect configurations can cause issues with your email delivery. It is recommended to consult Postfix documentation or seek help from a qualified professional when making advanced configurations.
+
+Conclusion
+In conclusion, configuring Postfix to use Gmail SMTP on Ubuntu is a simple and effective way to send and receive email on your Linux system. By following steps outlined in this article, you can easily set up and test your Postfix configuration to ensure it works correctly.
+
+(!) Remember to keep your Gmail account secure by disabling "Less Secure Apps" feature once you are done testing. Also, regularly update your system and use strong passwords to protect your email data from unauthorized access.
+********************************************************************
+Logs:
+
+ sudo nano sasl_passwd
+skillfactory_lab@Linux:/etc/postfix/sasl$ sudo nano /etc/postfix/main.cf
+skillfactory_lab@Linux:/etc/postfix/sasl$ sudo postfix reload
+postfix/postfix-script: refreshing the Postfix mail system
+skillfactory_lab@Linux:/etc/postfix/sasl$ sudo postmap /etc/postfix/sasl/sasl_passwd
+    Отправка почтового сообщения:
+skillfactory_lab@Linux:/etc/postfix/sasl$ echo "This is a test email from Postifx." | mail -s "Postfix test email" g.alexanders@gmail.com
+skillfactory_lab@Linux:/etc/postfix/sasl$ tail /var/log/mail.log
+Apr 21 13:27:58 Linux postfix/cleanup[10090]: 20B002C1B63: message-id=<20230421102758.20B002C1B63@Linux>
+Apr 21 13:27:58 Linux postfix/qmgr[10078]: 20B002C1B63: from=<skillfactory_lab@Linux.Lab>, size=380, nrcpt=1 (queue active)
+Apr 21 13:27:59 Linux postfix/smtp[10092]: 20B002C1B63: to=<g.alexanders@gmail.com>, relay=smtp.gmail.com[209.85.233.109]:587, delay=1.1, delays=0.03/0.03/1/0.05, dsn=5.7.0, status=bounced (host smtp.gmail.com[209.85.233.109] said: 530-5.7.0 Authentication Required. Learn more at 530 5.7.0  https://support.google.com/mail/?p=WantAuthError y11-20020a05651c020b00b002a8a8f2dc89sm572032ljn.72 - gsmtp (in reply to MAIL FROM command))
+Apr 21 13:27:59 Linux postfix/cleanup[10090]: 486372C1B65: message-id=<20230421102759.486372C1B65@Linux>
+Apr 21 13:27:59 Linux postfix/qmgr[10078]: 486372C1B65: from=<>, size=2597, nrcpt=1 (queue active)
+Apr 21 13:27:59 Linux postfix/bounce[10094]: 20B002C1B63: sender non-delivery notification: 486372C1B65
+Apr 21 13:27:59 Linux postfix/qmgr[10078]: 20B002C1B63: removed
+Apr 21 13:27:59 Linux postfix/smtp[10092]: connect to smtp.gmail.com[2a00:1450:4010:c05::6c]:587: Network is unreachable
+Apr 21 13:27:59 Linux postfix/smtp[10092]: 486372C1B65: to=<skillfactory_lab@Linux.Lab>, relay=smtp.gmail.com[209.85.233.109]:587, delay=0.41, delays=0.01/0/0.35/0.06, dsn=5.7.0, status=bounced (host smtp.gmail.com[209.85.233.109] said: 530-5.7.0 Authentication Required. Learn more at 530 5.7.0  https://support.google.com/mail/?p=WantAuthError n26-20020a19551a000000b004d545f1e0ccsm514241lfe.187 - gsmtp (in reply to MAIL FROM command))
+Apr 21 13:27:59 Linux postfix/qmgr[10078]: 486372C1B65: removed
+
+********
+        Конфигурация main.cf
+Updated some configurations' settings, receive the email in my Gmail account:
+
+sudo nano /etc/postfix/main.cf
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_security_level=may
+
+smtp_tls_CApath=/etc/ssl/certs
+smtp_tls_security_level = encrypt (здесь)
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = Linux
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+mydestination = Linux, Linux, localhost.Lab, localhost (здесь)
+relayhost = [smtp.gmail.com]:587
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+#inet_interfaces = loopback-only
+#default_transport = error
+#relay_transport = error
+inet_interfaces = all (здесь)
+inet_protocols = all (здесь)
+#relayhost = [smtp.gmail.com]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+#smtp_use_tls = yes
+
+Перегружаем сервис (после изменения конфигурации main.cf), тестируем:
+
+sudo postfix reload
+postfix/postfix-script: refreshing the Postfix mail system
+skillfactory_lab@Linux:/etc/postfix/sasl$ sudo postmap /etc/postfix/sasl/sasl_passwd
+skillfactory_lab@Linux:/etc/postfix/sasl$ echo "This is a test email from Postifx." | mail -s "Postfix test email" g.alexanders@gmail.com
+
+Полученное письмо:
+
+Postfix test email
+Входящие
+
+skillfactory_lab <g.alexanders@gmail.com>
+13:58 (3 минуты назад)
+кому: мне
+
+This is a test email from Postifx.
+
+********
+App Password has been revoked after successful message test:
+
+App passwords
+App passwords let you sign in to your Google Account from apps on devices that don't support 2-Step Verification. You'll only need to enter it once so you don't need to remember it. Learn more
+Your app passwords
+Name
+Created
+Last used
+Postfix
+12:43 PM
+–
+***************************************************************************************************************************************
+        Запуск Logwatch!!!
+Logwatch - отправка моих логов на GMAIL, через Postfix:
+
+$ sudo logwatch --detail high --mailto g.alexanders@gmail.com --range All --service vsftpd --service sshd --format html --output mail
+
+--service xrdp не значится в списке сервисов Logwatch...
+
+Можно использоватъ разные форматы и range для охвата периода пересылаемых логов (--range All).
+

@@ -1,0 +1,42 @@
+Return-Path: <g.alexanders@gmail.com>
+Received: from Linux ([176.59.41.153])
+        by smtp.gmail.com with ESMTPSA id y14-20020a2e320e000000b00295da33c42dsm622089ljy.15.2023.04.21.07.01.14
+        for <g.alexanders@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Apr 2023 07:01:14 -0700 (PDT)
+From: g.alexanders@gmail.com
+X-Google-Original-From: root@Linux
+Received: by Linux (Postfix, from userid 0)
+	id 4A79F2C06ED; Fri, 21 Apr 2023 17:01:13 +0300 (MSK)
+To: g.alexanders@gmail.com
+Subject: Logwatch for Linux (Linux)
+Auto-Submitted: auto-generated
+Precedence: bulk
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Message-Id: <20230421140113.4A79F2C06ED@Linux>
+Date: Fri, 21 Apr 2023 17:01:13 +0300 (MSK)
+
+ 
+ ################### Logwatch 7.5.6 (07/23/21) #################### 
+        Processing Initiated: Fri Apr 21 17:01:13 2023
+        Date Range Processed: today
+                              ( 2023-Apr-21 )
+                              Period is day.
+        Detail Level of Output: 10
+        Type of Output/Format: mail / text
+        Logfiles for Host: Linux
+ ################################################################## 
+ 
+ --------------------- SSHD Begin ------------------------ 
+
+ Users logging in through sshd:
+    skillfactory_lab:
+       192.168.1.179 (Alexandrs-MBP.lan): 1 Time
+ 
+ ---------------------- SSHD End ------------------------- 
+
+ 
+ ###################### Logwatch End ######################### 
+

@@ -1,0 +1,73 @@
+Return-Path: <g.alexanders@gmail.com>
+Received: from Linux ([176.59.41.153])
+        by smtp.gmail.com with ESMTPSA id o8-20020ac24948000000b004d863fa8681sm572825lfi.173.2023.04.21.07.03.19
+        for <g.alexanders@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Apr 2023 07:03:19 -0700 (PDT)
+From: g.alexanders@gmail.com
+X-Google-Original-From: root@Linux
+Received: by Linux (Postfix, from userid 0)
+	id 9A6282C06ED; Fri, 21 Apr 2023 17:03:18 +0300 (MSK)
+To: g.alexanders@gmail.com
+Subject: Logwatch for Linux (Linux)
+Auto-Submitted: auto-generated
+Precedence: bulk
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Message-Id: <20230421140318.9A6282C06ED@Linux>
+Date: Fri, 21 Apr 2023 17:03:18 +0300 (MSK)
+
+ 
+ ################### Logwatch 7.5.6 (07/23/21) #################### 
+        Processing Initiated: Fri Apr 21 17:03:18 2023
+        Date Range Processed: all
+        Detail Level of Output: 10
+        Type of Output/Format: mail / text
+        Logfiles for Host: Linux
+ ################################################################## 
+ 
+ --------------------- SSHD Begin ------------------------ 
+
+ SSHD Killed: 31 Times
+ 
+ SSHD Started: 154 Times
+ 
+ Failed logins from:
+    192.168.1.179 (Alexandrs-MBP.lan): 2 Times
+       skillfactory_lab/password: 2 Times
+ 
+ Illegal users from:
+    192.168.1.179 (Alexandrs-MBP.lan): 1 Time
+       alex: 1 Time
+ 
+ Users logging in through sshd:
+    skillfactory_lab:
+       192.168.1.179 (Alexandrs-MBP.lan): 65 Times
+       192.168.1.248: 3 Times
+       192.168.1.114 (Linux.lan): 2 Times
+ 
+ Received disconnect:
+    No supported authentication methods available [preauth]
+       192.168.1.179 : 1 Time(s)
+ 
+ **Unmatched Entries**
+ message repeated 2 times: [ Failed password for skillfactory_lab from 192.168.1.179 port 61410 ssh2] : 1 Time
+ 
+ ---------------------- SSHD End ------------------------- 
+
+ 
+ --------------------- vsftpd-messages Begin ------------------------ 
+
+ 
+ User FTP Logins:
+     (::ffff:192.168.1.114): skillfactory_lab - 3 Time(s)
+ 
+ Failed FTP Logins:
+     (::ffff:192.168.1.114): FTP - 1 Time(s)
+ 
+ ---------------------- vsftpd-messages End ------------------------- 
+
+ 
+ ###################### Logwatch End ######################### 
+
